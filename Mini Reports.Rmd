@@ -1,16 +1,75 @@
-# Take in data from first spreadsheet
+---
+title: "Mini Report"
+date: "2024-06-25"
+output:
+  html_document: default
+---
+```{r setup, include=FALSE}
+wd<- "C:/Users/EshaSharma/Onedrive - EshaSharma/OneDrive - Genective/Desktop/R Studio/IVE_RCode/Data"
+knitr::opts_knit$set(root.dir = wd)
+```
 
+```{r, include=FALSE, warning=FALSE}
 library(readxl)
 library(openxlsx)
+library(tidyverse)
+library(openxlsx)
+library(gt)
+```
 
-wd<- "C:/Users/EshaSharma/Onedrive - EshaSharma/OneDrive - Genective/Desktop/R Studio/IVE_RCode/Data"
-setwd(wd)
+```{r, echo=FALSE, results='asis'}
+ri<-read.xlsx("Report Information.xlsx")
+blank<-""
+
+report.date<-"2/23/2024"
+experiment.ID<-"240215_UNI_PRMY_ WC_CEW_FAW_SCB_WCR_ Plate_458_OLDWAY"
+samples.submission.date<-"2/15/2024"
+objective<-"Primary Screen-Test 1"
+species<-"CEW"
+
+trial.setup.date<-"2/15/2024"
+trial.completion.date<-"2/23/2024"
+insect.source<-"Benzon"
+
+submittor<-"Madison"
+project<-"Metagenomics and Uniprot"
+
+ri$B<-c(report.date,experiment.ID,samples.submission.date,objective,species)
+ri$D<-c(trial.setup.date,trial.completion.date,insect.source,blank,blank)
+ri$F<-c(submittor,project,blank,blank,blank)
+
+info_gt<-gt(ri)
+info_gt<-
+    info_gt |>
+    tab_options(column_labels.hidden = TRUE
+    ) |>
+    opt_table_lines("all"
+    ) |>
+    opt_horizontal_padding(scale = 3
+    ) |>
+    sub_missing(missing_text = ""
+    ) |>
+    tab_style(
+        style = list(
+            cell_text(weight = "bold")
+        ),
+        locations = cells_body(
+            columns = c("A","C","E")
+        )
+    )
+
+info_gt
+
+```
+
+```{r, include=FALSE, warning=FALSE}
+getwd()
 data<-read_excel("exdata.xlsm", sheet = "Graphs", col_names = FALSE)
 newcols<-read.xlsx("Table.xlsx")
+```
 
+```{r, include=FALSE, warning=FALSE}
 # Create a dataframe for each bug
-library(tidyverse)
-
 CEW<- data %>% slice(1:32)
 SCB<- data %>% slice(51:82)
 sFAW<- data %>% slice(103:134)
@@ -18,8 +77,10 @@ rFAW<- data %>% slice(155:186)
 SWCB<- data %>% slice(207:238)
 sWCR<- data %>% slice(259:290)
 rWCR<- data %>% slice(311:342)
-#test<- data %>% slice(1:32)
 
+```
+
+```{r, include=FALSE, warning=FALSE}
 #gets today's date and formats into YYMMDD
 date <-Sys.Date()
 year <- format(date, format="%y")
@@ -32,8 +93,12 @@ date2 <- paste(month, day, year, sep=".")
 folder <- paste("Mini Report Files", date2, sep="-")
 dir.create(folder)
 new_wd <- paste(wd, folder, sep= "/")
-setwd(new_wd)
+```
 
+
+```{r, include=FALSE, warning=FALSE}
+setwd(new_wd)
+getwd()
 #Format Dataframes and save as new excel files
 library(openxlsx)
 
@@ -81,9 +146,11 @@ for (File in DataList) {
     write.xlsx(df,File,rownames = FALSE)
 }
 
-# Creating the Graphs
+```
 
-library(gt)
+```{r, echo=FALSE, results='asis'}
+setwd(new_wd)
+
 cnames<- c("Description","Sample ID","n","Dose","Slight Stunting Score","Stunting Score","Mortality Score","% Contamination","Stats(if relevant)")
 
 for (File in DataList) {
@@ -114,48 +181,7 @@ for (File in DataList) {
             color = "blue"
         )
     print(gt_df)
-    name<-paste(bug,"graph",".docx",sep = "")
-    
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
