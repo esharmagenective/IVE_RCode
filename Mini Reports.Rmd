@@ -4,6 +4,7 @@ date: "2024-06-25"
 output:
   html_document: default
 ---
+
 ```{r, warning=FALSE}
 User <- as.character(Sys.info()["user"])
 User
@@ -53,7 +54,9 @@ insect.source<-"Benzon"
 
 submittor<-"Madison"
 project<-"Metagenomics and Uniprot"
+```
 
+```{r, echo=FALSE, results='asis'}
 ri$B<-c(report.date,experiment.ID,samples.submission.date,objective,species)
 ri$D<-c(trial.setup.date,trial.completion.date,insect.source,blank,blank)
 ri$F<-c(submittor,project,blank,blank,blank)
@@ -81,6 +84,8 @@ info_gt<-
 info_gt
 
 ```
+
+### Notes:
 
 ```{r, include=FALSE, warning=FALSE}
 getwd()
@@ -114,7 +119,6 @@ folder <- paste("Mini Report Files", date2, sep="-")
 dir.create(folder)
 new_wd <- paste(wd, folder, sep= "/")
 ```
-
 
 ```{r, include=FALSE, warning=FALSE}
 setwd(new_wd)
