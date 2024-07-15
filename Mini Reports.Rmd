@@ -1,6 +1,7 @@
 ---
 title: "Mini Report"
 date: "2024-06-25"
+author:
 output:
   html_document: default
 ---
