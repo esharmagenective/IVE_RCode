@@ -4,6 +4,13 @@ author: "me"
 date: "2024-07-16"
 output: html_document
 ---
+
+## Setting up the Code
+
+The first chunk identifies the user of the code. After that it can then assign the correct working directory for the code.
+
+The first chunk may need to be run twice due to the layout/functions within the RMD format.
+
 ```{r, include=FALSE, warning=FALSE}
 User <- as.character(Sys.info()["user"])
 User
@@ -25,9 +32,13 @@ if (User == "EshaSharma") {
 setwd(wd)
 ```
 
+If this chunk doesn't cooperate, run the first chunk again and try a second time. If it still doesn't work then pause and consult with someone.
+
 ```{r setup, include=FALSE}
 knitr::opts_knit$set(root.dir = wd)
 ```
+
+This chunk contains all the packages required for the code to be run.
 
 ```{r, include=FALSE, warning=FALSE}
 library(readxl)
@@ -37,11 +48,17 @@ library(openxlsx)
 library(gt)
 ```
 
+## Formatting the Data
+
+This chunk identifies the Raw Data file. Paste the name into the first set of quotations where exdata.xlsm is. Make sure the file format is "xlsm" for the file to be read correctly.
+
 ```{r, include=FALSE, warning=FALSE}
 getwd()
 data<-read_excel("exdata.xlsm", sheet = "Graphs", col_names = FALSE)
 newcols<-read.xlsx("Table.xlsx")
 ```
+
+This chunk separates each bug's data into separate tables in R. You are able to look at each table by clicking on the bug name in the Environment tab. This will have a new tab open with the table.
 
 ```{r, include=FALSE, warning=FALSE}
 # Create a dataframe for each bug
@@ -52,8 +69,9 @@ rFAW<- data %>% slice(155:186)
 SWCB<- data %>% slice(207:238)
 sWCR<- data %>% slice(259:290)
 rWCR<- data %>% slice(311:342)
-
 ```
+
+The date is formatted and then a folder is created using the date. This folder will be in the Data folder and will contain all the formatted files.
 
 ```{r, include=FALSE, warning=FALSE}
 #gets today's date and formats into YYMMDD
@@ -70,11 +88,11 @@ dir.create(folder)
 new_wd <- paste(wd, folder, sep= "/")
 ```
 
+The files are formatted to include summary statistics. The order of the data is then rearranged according to specifications.
+
 ```{r, include=FALSE, warning=FALSE}
 setwd(new_wd)
 getwd()
-#Format Dataframes and save as new excel files
-library(openxlsx)
 
 Bugs <- list(CEW,SCB,sFAW,rFAW,SWCB,sWCR,rWCR)
 
